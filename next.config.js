@@ -7,4 +7,5 @@ module.exports = withPWA({
 		skipWaiting: true,
 	},
 	reactStrinctMode: true,
+	output: "standalone",
 });
