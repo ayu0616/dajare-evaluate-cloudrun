@@ -1,16 +1,13 @@
-html,
-body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+a.inherit-font {
+    color: inherit;
+    text-decoration: inherit;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+a.inherit-font:hover {
+    color: inherit;
 }
 
-* {
-  box-sizing: border-box;
+.main-content {
+    max-width: 1000px;
+    margin: auto;
 }
