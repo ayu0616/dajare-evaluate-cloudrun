@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Container, Nav, Navbar } from "react-bootstrap";
-import NavLinkNext from "./NavLInkNext";
+import NavLinkNext from "./NavLinkNext";
 
 const NavHeader = () => {
 	return (
