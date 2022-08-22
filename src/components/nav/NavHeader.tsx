@@ -1,15 +1,19 @@
+import Link from "next/link";
 import { Container, Nav, Navbar } from "react-bootstrap";
+import NavLinkNext from "./NavLInkNext";
 
 const NavHeader = () => {
 	return (
 		<Navbar bg="light" expand="lg" sticky="top">
 			<Container>
-				<Navbar.Brand href="./">ホーム</Navbar.Brand>
+				<Link href="./">
+					<a className="navbar-brand">ダジャリストの部屋</a>
+				</Link>
 				<Navbar.Toggle data-bs-toggle="collapse" aria-controls="header-nav" data-bs-target="#header-nav" />
 				<Navbar.Collapse id="header-nav">
 					<Nav className="me-auto">
-						<Nav.Link href="./database">ダジャレDB</Nav.Link>
-						<Nav.Link href="./evaluate">ダジャレ評価</Nav.Link>
+						<NavLinkNext href="./evaluate">採点の祭典</NavLinkNext>
+						<NavLinkNext href="./database">ダジャレDB</NavLinkNext>
 					</Nav>
 				</Navbar.Collapse>
 			</Container>

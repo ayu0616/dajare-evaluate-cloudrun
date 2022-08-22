@@ -1,9 +1,9 @@
-import { ChangeEvent, ChangeEventHandler, CSSProperties } from "react";
+import { ChangeEvent, ChangeEventHandler, CSSProperties, Ref } from "react";
 import { Form } from "react-bootstrap";
 import $ from "jquery";
 
 declare type FormControlElement = HTMLInputElement | HTMLTextAreaElement;
-const AutoResizeTextarea = (props: { id?: string; value?: string | number | string[]; onChange?: ChangeEventHandler<FormControlElement>, disabled?:boolean }) => {
+const AutoResizeTextarea = (props: { id?: string; value?: string | number | string[]; onChange?: ChangeEventHandler<FormControlElement>, disabled?:boolean, ref?:  Ref<HTMLTextAreaElement>}) => {
 	const textAreaCss: CSSProperties = {
 		resize: "none",
 	};
@@ -28,7 +28,7 @@ const AutoResizeTextarea = (props: { id?: string; value?: string | number | stri
 		}
 	};
 
-    return <Form.Control id={props.id} type="text" as="textarea" style={textAreaCss} rows={1} value={props.value} onChange={onChange} disabled={ props.disabled} />;
+    return <Form.Control id={props.id} type="text" as="textarea" style={textAreaCss} rows={1} value={props.value} onChange={onChange} disabled={ props.disabled} ref={props.ref} />;
 };
 
 export default AutoResizeTextarea;

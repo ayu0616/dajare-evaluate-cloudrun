@@ -9,14 +9,19 @@ import $ from "jquery";
 import { sleep } from "../../src/helper";
 import AutoResizeTextarea from "../../src/components/AutoResizeTextarea";
 import calcTotalScore from "../../src/dajare/score/calcTotalScore";
+import PageTitle from "../../src/components/PageTitle";
+import { BsArrowDown } from "react-icons/bs";
+import EvaluateForm from "../../src/components/evaluate-form/EvaluateForm";
+import ScoreModal from "../../src/components/evaluate-score/ScoreModal";
 
 const Home: NextPage = () => {
-	const PAGE_TITLE = "ダジャレ評価";
+	const PAGE_TITLE = "ダジャレ採点の祭典";
 	const [dajareSentence, setDajareSentence] = useState("");
 	const [isKanaDisabled, setIsKanaDisabled] = useState(true);
 	const [kanaDajare, setKanaDajare] = useState("");
 	const [dajarePairs, setDajarePairs] = useState<DajarePair[]>([]);
 	const [totalScore, setTotalScore] = useState(0);
+	const [modalShow, setModalShow] = useState(false);
 
 	const FIRST_CONTROL_ID = "dajare";
 	const SECOND_CONTROL_ID = "fixing-kana";
@@ -31,6 +36,7 @@ const Home: NextPage = () => {
 			setIsKanaDisabled(false);
 			await sleep(1 / 10 ** 10);
 			fitTextareaHeight("#" + SECOND_CONTROL_ID);
+			$("#" + SECOND_CONTROL_ID).focus();
 		})();
 	};
 
@@ -39,6 +45,7 @@ const Home: NextPage = () => {
 		setDajarePairs(dajarePairsLocal);
 		// scoreShuffle();
 		setTotalScore(calcTotalScore(dajarePairsLocal));
+		setModalShow(true);
 	};
 
 	const fitTextareaHeight = (selector: string) => {
@@ -56,28 +63,50 @@ const Home: NextPage = () => {
 		}
 	};
 
+	const clearForm = () => {
+		if (!confirm("ダジャレをリセットしますか？")) return;
+		setDajareSentence("");
+		setIsKanaDisabled(true);
+		setKanaDajare("");
+		setDajarePairs([]);
+		setTotalScore(0);
+		setModalShow(false);
+	};
+
 	return (
 		<>
 			<Head>
 				<title>{PAGE_TITLE}</title>
 			</Head>
 
-			<div className="m-3">
+			{/* <div className="m-3">
 				<h1>{PAGE_TITLE}</h1>
 				<hr />
-			</div>
-			<Form className="m-3" as="div">
+			</div> */}
+			<PageTitle title={PAGE_TITLE} />
+			<EvaluateForm>
 				<Form.Group controlId={FIRST_CONTROL_ID}>
-					<Form.Label>ダジャレを入力</Form.Label>
+					<Form.Label>
+						<span className="fs-5">Step1.</span>
+						<br />
+						ダジャレを入力
+					</Form.Label>
 					<InputGroup>
 						<AutoResizeTextarea value={dajareSentence} onChange={(e) => setDajareSentence(e.currentTarget.value)} />
 						<Button onClick={firstOnClick}>カナに変換</Button>
 					</InputGroup>
 				</Form.Group>
-			</Form>
-			<Form className="m-3" as="div">
+			</EvaluateForm>
+			<div className="d-flex justify-content-center">
+				<BsArrowDown className="fs-1" />
+			</div>
+			<EvaluateForm>
 				<Form.Group controlId={SECOND_CONTROL_ID}>
-					<Form.Label>修正するカナがあれば修正してください</Form.Label>
+					<Form.Label>
+						<span className="fs-5">Step2.</span>
+						<br />
+						カナを修正（修正がなければそのまま）
+					</Form.Label>
 					<InputGroup>
 						<AutoResizeTextarea value={kanaDajare} disabled={isKanaDisabled} onChange={(e) => setKanaDajare(e.currentTarget.value)} />
 						<Button disabled={isKanaDisabled} onClick={secondOnClick}>
@@ -85,22 +114,23 @@ const Home: NextPage = () => {
 						</Button>
 					</InputGroup>
 				</Form.Group>
-			</Form>
+			</EvaluateForm>
 
 			{/* 以下スコア表示欄 */}
-			<div className="m-3">
-				<p>あなたのスコアは、、、</p>
-				<p className="fs-1 text-center">{totalScore}点</p>
-			</div>
-			<div className="m-3">
-				<p>スコア詳細</p>
+			{/* <button onClick={() => setModalShow(true)}>show</button> */}
+			<ScoreModal show={modalShow} onHide={() => setModalShow(false)} score={totalScore} dajarePairs={dajarePairs} dajare={dajareSentence} anotherDajareBtnOnClick={clearForm} />
+
+			<div className="d-flex justify-content-end">
+				<Button className="m-3" variant="danger" onClick={clearForm}>
+					リセット
+				</Button>
 			</div>
 
-			<div className="m-3">
+			{/* <div className="m-3">
 				{dajarePairs.map((pair, index) => (
 					<p key={index}>{pair.map((item) => item.dajare).join(", ")}</p>
 				))}
-			</div>
+			</div> */}
 		</>
 	);
 };
